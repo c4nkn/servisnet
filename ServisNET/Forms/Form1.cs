@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,9 +13,24 @@ namespace ServisNET
 {
     public partial class Form1 : Form
     {
+        [DllImport("DwmApi")]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, int[] attrValue, int attrSize);
+
+
         public Form1()
         {
             InitializeComponent();
+        }
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            base.OnHandleCreated(e);
+            DwmSetWindowAttribute(this.Handle, 20, new[] { 1 }, 4);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            panel2.Visible = true;
+            panel1.Visible = false;
         }
     }
 }
